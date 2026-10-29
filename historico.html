@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico | PetCare</title>
+
+    <style>
+        :root {
+            --primary: #176b5b;
+            --primary-dark: #105447;
+            --primary-soft: #e8f4f0;
+            --accent: #f1b95b;
+            --bg: #f4f7f6;
+            --surface: #ffffff;
+            --text: #20312d;
+            --muted: #788681;
+            --border: #e5ece9;
+            --shadow: 0 8px 24px rgba(24, 62, 51, .06);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 248px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 25px 16px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px;
+            margin-bottom: 38px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--primary);
+            color: white;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .brand-name span {
+            color: var(--primary);
+        }
+
+        .menu-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 11px;
+            color: #63716c;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: .2s;
+        }
+
+        .nav-item:hover {
+            background: #f4f8f6;
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 15px 12px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-bottom p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* MAIN */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 76px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .breadcrumb strong {
+            color: var(--text);
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 32px 35px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .page-heading h1 {
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .heading-badge {
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 27px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 21px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 17px;
+        }
+
+        .stat-title {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            background: var(--primary-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .stat-description {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* HISTORICO */
+
+        .history-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .history-header {
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-header h2 {
+            font-size: 16px;
+        }
+
+        .history-header p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 260px;
+            padding: 10px 13px 10px 35px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .search-box input:focus,
+        .filters select:focus {
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 9px;
+            color: var(--muted);
+        }
+
+        .filters select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            background: white;
+            color: var(--text);
+            font-size: 12px;
+        }
+
+        /* HISTORY ITEMS */
+
+        .history-list {
+            padding: 10px 24px;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 18px;
+            padding: 23px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 42px;
+            flex-shrink: 0;
+        }
+
+        .timeline-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .history-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .history-animal {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .history-date {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .history-description {
+            background: #f8faf9;
+            border: 1px solid var(--border);
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .history-description strong {
+            font-size: 12px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .history-description p {
+            color: #687771;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .history-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 12px;
+        }
+
+        .meta-item {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-details {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-details:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-agendada {
+            background: #fff4dd;
+            color: #a56a0c;
+        }
+
+        .status-andamento {
+            background: #e7efff;
+            color: #4268ad;
+        }
+
+        .status-concluida {
+            background: #e3f5eb;
+            color: #25804f;
+        }
+
+        .status-cancelada {
+            background: #fdeaea;
+            color: #b64b4b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 65px 20px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--text);
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+        }
+
+        /* MODAL */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 40, 34, .45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            max-height: 92vh;
+            overflow-y: auto;
+            border-radius: 17px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+        }
+
+        .modal-header {
+            padding: 23px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+        }
+
+        .modal-header p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .close-modal {
+            border: none;
+            background: none;
+            font-size: 23px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section h3 {
+            font-size: 12px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 13px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .detail-field {
+            background: #f8faf9;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px;
+            min-width: 0;
+        }
+
+        .detail-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-field span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+
+        .detail-field strong {
+            font-size: 12px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .modal-footer {
+            padding: 18px 25px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-close {
+            padding: 11px 18px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-close:hover {
+            background: var(--primary-dark);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1050px) {
+            .history-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .filters {
+                width: 100%;
+            }
+
+            .search-box {
+                flex: 1;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 9px;
+            }
+
+            .brand {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .brand-name,
+            .menu-label,
+            .nav-item span:not(.nav-icon),
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 13px 8px;
+            }
+
+            .topbar {
+                padding: 0 17px;
+            }
+
+            .content {
+                padding: 25px 16px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .history-top {
+                flex-direction: column;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-field.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filters select {
+                width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .history-list {
+                padding: 10px 15px;
+            }
+
+            .history-item {
+                gap: 10px;
+            }
+
+            .history-meta {
+                gap: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✚</div>
+            <div class="brand-name">Pet<span>Care</span></div>
+        </div>
+
+        <div class="menu-label">MENU PRINCIPAL</div>
+
+        <nav class="nav-menu">
+
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="animais.html" class="nav-item">
+                <span class="nav-icon">🐾</span>
+                <span>Animais</span>
+            </a>
+
+            <a href="tutores.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Tutores</span>
+            </a>
+
+            <a href="veterinarios.html" class="nav-item">
+                <span class="nav-icon">⚕</span>
+                <span>Veterinários</span>
+            </a>
+
+            <a href="consultas.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Consultas</span>
+            </a>
+
+            <a href="historico.html" class="nav-item active">
+                <span class="nav-icon">◷</span>
+                <span>Histórico</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>PetCare<br>Sistema de Gestão Veterinária</p>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                Menu principal / <strong>Histórico</strong>
+            </div>
+
+            <div class="user-area">
+
+                <div class="user-avatar">PC</div>
+
+                <div class="user-info">
+                    <strong>Administrador</strong>
+                    <span>Gestão PetCare</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div>
+                    <h1>Histórico clínico</h1>
+                    <p>Acompanhe os registros e atendimentos anteriores dos animais.</p>
+                </div>
+
+                <div class="heading-badge">
+                    ◷ Registro de atendimentos
+                </div>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <span class="stat-title">Total de consultas</span>
+                        <div class="stat-icon">▣</div>
+                    </div>
+
+                    <div class="stat-value" id="totalConsultas">0</div>
+
+                    <div class="stat-description">
+                        Registros de atendimento
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <span class="stat-title">Animais atendidos</span>
+                        <div class="stat-icon">🐾</div>
+                    </div>
+
+                    <div class="stat-value" id="totalAnimais">0</div>
+
+                    <div class="stat-description">
+                        Animais com consultas concluídas
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <span class="stat-title">Diagnósticos registrados</span>
+                        <div class="stat-icon">⚕</div>
+                    </div>
+
+                    <div class="stat-value" id="totalDiagnosticos">0</div>
+
+                    <div class="stat-description">
+                        Registros clínicos preenchidos
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HISTORY LIST -->
+
+            <div class="history-card">
+
+                <div class="history-header">
+
+                    <div>
+                        <h2>Registros clínicos</h2>
+                        <p>Consulte os atendimentos registrados no PetCare.</p>
+                    </div>
+
+                    <div class="filters">
+
+                        <div class="search-box">
+
+                            <span class="search-icon">⌕</span>
+
+                            <input
+                                type="text"
+                                id="searchInput"
+                                placeholder="Buscar animal, tutor ou veterinário..."
+                                oninput="renderizarHistorico()"
+                            >
+
+                        </div>
+
+                        <select
+                            id="animalFilter"
+                            onchange="renderizarHistorico()"
+                        >
+                            <option value="">Todos os animais</option>
+                        </select>
+
+                        <select
+                            id="statusFilter"
+                            onchange="renderizarHistorico()"
+                        >
+                            <option value="">Todos os status</option>
+                            <option value="Concluída">Concluídas</option>
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Agendada">Agendadas</option>
+                            <option value="Cancelada">Canceladas</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-list" id="historyList"></div>
+
+
+                <div id="emptyState" class="empty-state" style="display:none;">
+
+                    <div class="empty-icon">📋</div>
+
+                    <h3>Nenhum registro encontrado</h3>
+
+                    <p>
+                        Os atendimentos cadastrados aparecerão aqui.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- MODAL DE DETALHES -->
+
+<div class="modal-overlay" id="modalOverlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+                <h2>Detalhes do atendimento</h2>
+                <p>Informações completas do registro clínico.</p>
+            </div>
+
+            <button class="close-modal" onclick="fecharModal()">×</button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="detail-section">
+
+                <h3>Informações do atendimento</h3>
+
+                <div class="detail-grid">
+
+                    <div class="detail-field">
+                        <span>Animal</span>
+                        <strong id="detailAnimal">-</strong>
+                    </div>
+
+                    <div class="detail-field">
+                        <span>Tutor</span>
+                        <strong id="detailTutor">-</strong>
+                    </div>
+
+                    <div class="detail-field">
+                        <span>Veterinário</span>
+                        <strong id="detailVeterinario">-</strong>
+                    </div>
+
+                    <div class="detail-field">
+                        <span>Data</span>
+                        <strong id="detailData">-</strong>
+                    </div>
+
+                    <div class="detail-field">
+                        <span>Horário</span>
+                        <strong id="detailHorario">-</strong>
+                    </div>
+
+                    <div class="detail-field">
+                        <span>Status</span>
+                        <strong id="detailStatus">-</strong>
+                    </div>
+
+                    <div class="detail-field full">
+                        <span>Motivo da consulta</span>
+                        <strong id="detailMotivo">-</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>Registro clínico</h3>
+
+                <div class="detail-grid">
+
+                    <div class="detail-field full">
+                        <span>Diagnóstico</span>
+                        <strong id="detailDiagnostico">-</strong>
+                    </div>
+
+                    <div class="detail-field full">
+                        <span>Procedimentos realizados</span>
+                        <strong id="detailProcedimentos">-</strong>
+                    </div>
+
+                    <div class="detail-field full">
+                        <span>Observações adicionais</span>
+                        <strong id="detailObservacoes">-</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button class="btn-close" onclick="fecharModal()">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // CONFIGURAÇÕES
+
+    const STORAGE_CONSULTAS = "petcare_consultas";
+    const STORAGE_ANIMAIS = "petcare_animais";
+
+    let consultas = [];
+    let animais = [];
+
+
+    // CARREGAR DADOS
+
+    function carregarDados() {
+
+        consultas = JSON.parse(
+            localStorage.getItem(STORAGE_CONSULTAS) || "[]"
+        );
+
+        animais = JSON.parse(
+            localStorage.getItem(STORAGE_ANIMAIS) || "[]"
+        );
+
+        atualizarFiltroAnimais();
+
+        atualizarEstatisticas();
+
+        renderizarHistorico();
+
+    }
+
+
+    // FUNÇÕES AUXILIARES
+
+    function obterNome(objeto) {
+
+        return objeto.nome ||
+               objeto.name ||
+               objeto.nomeAnimal ||
+               objeto.nomeVeterinario ||
+               "Sem nome";
+
+    }
+
+
+    function obterId(objeto) {
+
+        return String(
+            objeto.id ??
+            objeto.identifier ??
+            objeto.identificador ??
+            ""
+        );
+
+    }
+
+
+    function obterNomeAnimal(id) {
+
+        const animal = animais.find(
+            item => obterId(item) === String(id)
+        );
+
+        return animal ? obterNome(animal) : "Animal não encontrado";
+
+    }
+
+
+    function obterNomeVeterinario(id) {
+
+        const veterinarios = JSON.parse(
+            localStorage.getItem("petcare_veterinarios") || "[]"
+        );
+
+        const veterinario = veterinarios.find(
+            item => obterId(item) === String(id)
+        );
+
+        return veterinario
+            ? obterNome(veterinario)
+            : "Veterinário não encontrado";
+
+    }
+
+
+    function obterTutorDoAnimal(animalId) {
+
+        const animal = animais.find(
+            item => obterId(item) === String(animalId)
+        );
+
+        if (!animal) return "Tutor não identificado";
+
+        const tutorId =
+            animal.tutorId ??
+            animal.idTutor ??
+            animal.tutor_id;
+
+        if (tutorId !== undefined && tutorId !== null) {
+
+            const tutores = JSON.parse(
+                localStorage.getItem("petcare_tutores") || "[]"
+            );
+
+            const tutor = tutores.find(item => {
+
+                return obterId(item) === String(tutorId);
+
+            });
+
+            if (tutor) return obterNome(tutor);
+
+        }
+
+        if (typeof animal.tutor === "string") {
+            return animal.tutor;
+        }
+
+        if (animal.tutor && typeof animal.tutor === "object") {
+            return obterNome(animal.tutor);
+        }
+
+        return "Tutor não identificado";
+
+    }
+
+
+    function escaparHTML(valor) {
+
+        return String(valor ?? "").replace(/[&<>"']/g, caractere => {
+
+            const mapa = {
+
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+
+            };
+
+            return mapa[caractere];
+
+        });
+
+    }
+
+
+    function formatarData(data) {
+
+        if (!data) return "Não informada";
+
+        const partes = data.split("-");
+
+        if (partes.length !== 3) return data;
+
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+    }
+
+
+    function classeStatus(status) {
+
+        const classes = {
+
+            "Agendada": "status-agendada",
+            "Em andamento": "status-andamento",
+            "Concluída": "status-concluida",
+            "Cancelada": "status-cancelada"
+
+        };
+
+        return classes[status] || "";
+
+    }
+
+
+    // FILTRO DE ANIMAIS
+
+    function atualizarFiltroAnimais() {
+
+        const select = document.getElementById("animalFilter");
+
+        select.innerHTML =
+            '<option value="">Todos os animais</option>';
+
+        animais.forEach(animal => {
+
+            const id = obterId(animal);
+
+            if (!id) return;
+
+            const option = document.createElement("option");
+
+            option.value = id;
+            option.textContent = obterNome(animal);
+
+            select.appendChild(option);
+
+        });
+
+    }
+
+
+    // ESTATÍSTICAS
+
+    function atualizarEstatisticas() {
+
+        const concluidas = consultas.filter(
+            consulta => consulta.status === "Concluída"
+        );
+
+        const animaisAtendidos = new Set(
+            concluidas.map(consulta => String(consulta.animalId))
+        );
+
+        const diagnosticos = consultas.filter(
+            consulta =>
+                consulta.diagnostico &&
+                consulta.diagnostico.trim() !== ""
+        );
+
+        document.getElementById("totalConsultas").textContent =
+            concluidas.length;
+
+        document.getElementById("totalAnimais").textContent =
+            animaisAtendidos.size;
+
+        document.getElementById("totalDiagnosticos").textContent =
+            diagnosticos.length;
+
+    }
+
+
+    // RENDERIZAR HISTÓRICO
+
+    function renderizarHistorico() {
+
+        const container = document.getElementById("historyList");
+
+        const emptyState = document.getElementById("emptyState");
+
+        const busca = document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const animalFiltro =
+            document.getElementById("animalFilter").value;
+
+        const statusFiltro =
+            document.getElementById("statusFilter").value;
+
+
+        let filtradas = consultas.filter(consulta => {
+
+            const animal = obterNomeAnimal(consulta.animalId);
+
+            const veterinario = obterNomeVeterinario(
+                consulta.veterinarioId
+            );
+
+            const tutor = obterTutorDoAnimal(consulta.animalId);
+
+            const correspondeBusca =
+
+                animal.toLowerCase().includes(busca) ||
+
+                veterinario.toLowerCase().includes(busca) ||
+
+                tutor.toLowerCase().includes(busca) ||
+
+                String(consulta.motivo || "").toLowerCase().includes(busca) ||
+
+                String(consulta.diagnostico || "").toLowerCase().includes(busca);
+
+
+            const correspondeAnimal =
+
+                animalFiltro === "" ||
+
+                String(consulta.animalId) === String(animalFiltro);
+
+
+            const correspondeStatus =
+
+                statusFiltro === "" ||
+
+                consulta.status === statusFiltro;
+
+
+            return (
+                correspondeBusca &&
+                correspondeAnimal &&
+                correspondeStatus
+            );
+
+        });
+
+
+        // MAIS RECENTES PRIMEIRO
+
+        filtradas.sort((a, b) => {
+
+            const dataA = `${a.data || ""} ${a.horario || ""}`;
+
+            const dataB = `${b.data || ""} ${b.horario || ""}`;
+
+            return dataB.localeCompare(dataA);
+
+        });
+
+
+        container.innerHTML = "";
+
+
+        if (filtradas.length === 0) {
+
+            emptyState.style.display = "block";
+
+            return;
+
+        }
+
+
+        emptyState.style.display = "none";
+
+
+        filtradas.forEach(consulta => {
+
+            const animal = obterNomeAnimal(consulta.animalId);
+
+            const veterinario = obterNomeVeterinario(
+                consulta.veterinarioId
+            );
+
+            const tutor = obterTutorDoAnimal(consulta.animalId);
+
+            const item = document.createElement("div");
+
+            item.className = "history-item";
+
+
+            item.innerHTML = `
+
+                <div class="timeline">
+
+                    <div class="timeline-icon">⚕</div>
+
+                </div>
+
+
+                <div class="history-content">
+
+                    <div class="history-top">
+
+                        <div>
+
+                            <div class="history-animal">
+                                ${escaparHTML(animal)}
+                            </div>
+
+                            <div class="history-date">
+                                ${escaparHTML(formatarData(consulta.data))}
+                                às ${escaparHTML(consulta.horario || "--:--")}
+                            </div>
+
+                        </div>
+
+
+                        <span class="status ${classeStatus(consulta.status)}">
+                            ${escaparHTML(consulta.status)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="history-description">
+
+                        <strong>
+                            ${escaparHTML(consulta.motivo || "Atendimento")}
+                        </strong>
+
+                        <p>
+                            ${escaparHTML(
+                                consulta.diagnostico ||
+                                "Nenhum diagnóstico registrado."
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <div class="history-meta">
+
+                        <div class="meta-item">
+                            Veterinário:
+                            <strong>${escaparHTML(veterinario)}</strong>
+                        </div>
+
+                        <div class="meta-item">
+                            Tutor:
+                            <strong>${escaparHTML(tutor)}</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="history-actions">
+
+                        <button
+                            class="btn-details"
+                            onclick="abrirDetalhes('${escaparHTML(consulta.id)}')"
+                        >
+                            Ver detalhes →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(item);
+
+        });
+
+    }
+
+
+    // ABRIR DETALHES
+
+    function abrirDetalhes(id) {
+
+        const consulta = consultas.find(
+            item => String(item.id) === String(id)
+        );
+
+        if (!consulta) return;
+
+
+        document.getElementById("detailAnimal").textContent =
+            obterNomeAnimal(consulta.animalId);
+
+        document.getElementById("detailTutor").textContent =
+            obterTutorDoAnimal(consulta.animalId);
+
+        document.getElementById("detailVeterinario").textContent =
+            obterNomeVeterinario(consulta.veterinarioId);
+
+        document.getElementById("detailData").textContent =
+            formatarData(consulta.data);
+
+        document.getElementById("detailHorario").textContent =
+            consulta.horario || "Não informado";
+
+        document.getElementById("detailStatus").textContent =
+            consulta.status || "Não informado";
+
+        document.getElementById("detailMotivo").textContent =
+            consulta.motivo || "Não informado";
+
+        document.getElementById("detailDiagnostico").textContent =
+            consulta.diagnostico || "Nenhum diagnóstico registrado.";
+
+        document.getElementById("detailProcedimentos").textContent =
+            consulta.procedimentos || "Nenhum procedimento registrado.";
+
+        document.getElementById("detailObservacoes").textContent =
+            consulta.observacoes || "Nenhuma observação registrada.";
+
+
+        document.getElementById("modalOverlay").classList.add("active");
+
+    }
+
+
+    // FECHAR MODAL
+
+    function fecharModal() {
+
+        document.getElementById("modalOverlay").classList.remove("active");
+
+    }
+
+
+    // FECHAR AO CLICAR FORA
+
+    document.getElementById("modalOverlay").addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+                fecharModal();
+            }
+
+        }
+    );
+
+
+    // INICIALIZAÇÃO
+
+    carregarDados();
+
+</script>
+
+</body>
+</html>
