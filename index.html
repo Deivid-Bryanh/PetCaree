@@ -257,15 +257,35 @@
     clearTimeout(window.toastTimer);
     window.toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
   }
-  document.querySelectorAll('.nav button').forEach(button => {
+// CONFIGURAÇÃO DOS ARQUIVOS DA HOSPEDAGEM
+const PAGINAS = {
+    inicio: "index.html",
+    animais: "animais.html",
+    tutores: "tutores.html",
+    veterinarios: "veterinarios.html",
+    consultas: "consultas.html",
+    historico: "historico.html"
+};
+
+// REDIRECIONAMENTO DO MENU
+document.querySelectorAll('.nav button').forEach(button => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('.nav button').forEach(item => item.classList.remove('active'));
-      button.classList.add('active');
-      const page = button.dataset.page;
-      document.querySelector('.breadcrumb b').textContent = page === 'Início' ? 'Visão geral' : page;
-      if (page !== 'Início') notify('A área "' + page + '" será implementada nas próximas etapas.');
+        const pagina = button.dataset.page;
+
+        const destinos = {
+            "Início": PAGINAS.inicio,
+            "Animais": PAGINAS.animais,
+            "Tutores": PAGINAS.tutores,
+            "Veterinários": PAGINAS.veterinarios,
+            "Consultas": PAGINAS.consultas,
+            "Histórico": PAGINAS.historico
+        };
+
+        if (destinos[pagina]) {
+            window.location.href = destinos[pagina];
+        }
     });
-  });
+});
   document.getElementById('search').addEventListener('input', event => {
     const term = event.target.value.toLocaleLowerCase('pt-BR');
     document.querySelectorAll('#petRows tr').forEach(row => {
